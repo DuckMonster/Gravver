@@ -11,8 +11,8 @@ import com.emilstrom.gravver.helper.Vertex;
  * Created by Emil on 2014-04-02.
  */
 public class Player extends Actor {
-	static final float idleRotationSpeed = 10f, gravityRotationSpeed = 360f, movementSpeed = 9f, maxGravity = 20f, gravityAdd = 17f;
-	public static final float gravityRange = 6f;
+	static final float idleRotationSpeed = 10f, gravityRotationSpeed = 360f, movementSpeed = 9f, gravityAdd = 1.8f;
+	public static final float gravityRange = 6f, gravityFactor = 15f;
 
 
 	PlayerController controller;
@@ -34,13 +34,13 @@ public class Player extends Actor {
 
 		//Gravity
 		if (controller.getGravityInput()) {
-			currentGravity = Math.min(currentGravity + gravityAdd * Game.updateTime, maxGravity);
+			currentGravity = Math.min(currentGravity + gravityAdd * Game.updateTime, 1f);
 		} else {
-			currentGravity = Math.max(currentGravity - gravityAdd * 3 * Game.updateTime, 0f);
+			currentGravity = Math.max(currentGravity - gravityAdd * Game.updateTime, 0f);
 		}
 
 		//Rotation
-		rotation += (idleRotationSpeed + gravityRotationSpeed * (currentGravity / maxGravity)) * Game.updateTime;
+		rotation += (idleRotationSpeed + gravityRotationSpeed * currentGravity) * Game.updateTime;
 	}
 
 	public void draw() {

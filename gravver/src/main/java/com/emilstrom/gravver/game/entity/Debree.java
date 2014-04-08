@@ -29,7 +29,7 @@ public class Debree extends Actor {
 		debreeSprite = new Sprite(Art.blank);
 
 		rotationSpeed = (float)GameMath.getRndDouble(-270f, 270f);
-		speed = new Vertex((float)GameMath.getRndDouble(-5f, 5f), -6f);
+		speed = new Vertex((float)GameMath.getRndDouble(-3f, 3f), -3f);
 	}
 
 	public void logic() {
@@ -40,7 +40,9 @@ public class Debree extends Actor {
 		float dis = Vertex.getLength(position, player.position);
 
 		if (dis < Player.gravityRange) {
-			Vertex force = dir.times(player.currentGravity).times(1f - (dis / Player.gravityRange));
+			float distanceFactor = (float)Math.pow(Math.E, -(dis/Player.gravityRange) * 1.5f);
+
+			Vertex force = dir.times(player.currentGravity * Player.gravityFactor).times(distanceFactor);
 			speed.add(force.times(Game.updateTime));
 		}
 
@@ -50,9 +52,6 @@ public class Debree extends Actor {
 		//Bounce
 		if (position.x+speed.x*Game.updateTime < -Game.currentGame.gameWidth/2 || position.x+speed.x*Game.updateTime > Game.currentGame.gameWidth/2)
 			speed.x *= -1;
-
-		if (position.y+speed.y*Game.updateTime < -Game.currentGame.gameHeight/2 || position.y+speed.y*Game.updateTime > Game.currentGame.gameHeight/2)
-			speed.y *= -1;
 	}
 
 	public void draw() {
