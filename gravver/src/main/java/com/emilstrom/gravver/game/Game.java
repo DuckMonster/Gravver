@@ -6,6 +6,9 @@ import android.opengl.Matrix;
 import android.os.SystemClock;
 
 import com.emilstrom.gravver.helper.Camera;
+import com.emilstrom.gravver.helper.ShaderHelper;
+import com.emilstrom.gravver.helper.Sprite;
+import com.emilstrom.gravver.helper.Vertex;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -19,10 +22,14 @@ public class Game implements GLSurfaceView.Renderer {
 	public static float updateTime = 0;
 	private static long oldTime;
 
-	public void Game() {
+
+	Map currentMap;
+
+	public Game() {
 		currentGame = this;
 
 		currentCamera = new Camera();
+		currentMap = new Map();
 	}
 
 	public void logic() {
@@ -34,16 +41,25 @@ public class Game implements GLSurfaceView.Renderer {
 		long newTime = SystemClock.uptimeMillis();
 		updateTime = (newTime - oldTime) * 0.001f;
 		oldTime = newTime;
+
+		currentMap.logic();
 	}
 
 	public void draw() {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+
+		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+		GLES20.glEnable(GLES20.GL_BLEND);
+
+		currentMap.draw();
 	}
 
 
 	//GL STUFF
 	float projection[] = new float[16];
 	public Camera currentCamera;
+
+	public float gameWidth, gameHeight;
 
 	public float[] getViewProjection() {
 		float ret[] = new float[16];
@@ -64,6 +80,13 @@ public class Game implements GLSurfaceView.Renderer {
 		final int screenSize = 10;
 		float ratio = (float)height / (float)width;
 
-		Matrix.orthoM(projection, 0, -screenSize, screenSize, -ratio * screenSize, ratio * screenSize, 1f, 3f);
+		gameWidth = screenSize * 2;
+		gameHeight = ratio * gameWidth;
+
+		Matrix.orthoM(projection, 0, -screenSize, screenSize, -ratio * screenSize, ratio * screenSize, 1f, 10f);
+
+		ShaderHelper.loadShader();
+		Art.loadAssets();
+		PlayerController.recalculatePosition();
 	}
 }

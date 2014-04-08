@@ -4,6 +4,11 @@ package com.emilstrom.gravver.helper;
  * Created bg Emil on 2014-02-20.
  */
 public class Color {
+	public static final Color WHITE = new Color(1f, 1f, 1f),
+		RED = new Color(1f, 0f, 0f),
+		GREEN = new Color(0f, 1f, 0f),
+		BLUE = new Color(0f, 0f, 1f);
+
 	public float r, g, b, a;
 	public Color() {
 		r = 0;
