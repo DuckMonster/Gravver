@@ -57,15 +57,6 @@ public class Debree extends Actor {
 		}
 
 		position.add(velocity.times(Game.updateTime));
-
-
-		//Bounce
-		if (position.x+velocity.x*Game.updateTime < -Game.currentGame.gameWidth/2 || position.x+velocity.x*Game.updateTime > Game.currentGame.gameWidth/2)
-			velocity.x *= -0.6f;
-
-		//Collision
-		Actor a = map.getCollision(this, position.plus(velocity.times(Game.updateTime)), size);
-		if (a != null) collideWith(a);
 	}
 
 	public void draw() {

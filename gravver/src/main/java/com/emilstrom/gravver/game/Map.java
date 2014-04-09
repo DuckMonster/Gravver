@@ -1,5 +1,6 @@
 package com.emilstrom.gravver.game;
 
+import com.emilstrom.gravver.game.effect.Effect;
 import com.emilstrom.gravver.game.entity.Actor;
 import com.emilstrom.gravver.game.entity.Debree;
 import com.emilstrom.gravver.game.entity.Player;
@@ -16,6 +17,9 @@ public class Map {
 	public Player player;
 	public Debree debreeList[] = new Debree[30];
 	int debreeListIndex = 0;
+
+	Effect effectList[] = new Effect[50];
+	int effectListIndex = 0;
 
 	public Map() {
 		player = new Player(this);
@@ -44,9 +48,13 @@ public class Map {
 		return null;
 	}
 
+	public void addEffect(Effect e) {
+		effectList[effectListIndex] = e;
+		effectListIndex = (effectListIndex + 1) % effectList.length;
+	}
+
 	public void logic() {
 		player.logic();
-
 
 		debreeSpawnTimer.logic();
 
@@ -56,10 +64,12 @@ public class Map {
 		}
 
 		for(Debree d : debreeList) if (d != null) d.logic();
+		for(Effect e : effectList) if (e != null) e.logic();
 	}
 
 	public void draw() {
 		player.draw();
 		for(Debree d : debreeList) if (d != null) d.draw();
+		for(Effect e : effectList) if (e != null) e.draw();
 	}
 }

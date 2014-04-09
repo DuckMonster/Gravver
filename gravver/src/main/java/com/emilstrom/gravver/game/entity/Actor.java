@@ -1,15 +1,14 @@
 package com.emilstrom.gravver.game.entity;
 
+import com.emilstrom.gravver.game.Game;
 import com.emilstrom.gravver.game.Map;
-import com.emilstrom.gravver.game.effect.RingEffect;
+import com.emilstrom.gravver.game.effect.CollisionEffect;
 import com.emilstrom.gravver.helper.Vertex;
 
 /**
  * Created by Emil on 2014-04-02.
  */
 public class Actor extends Entity {
-	RingEffect collisionEffect;
-
 	Vertex velocity = new Vertex(0,0);
 	float size = 1f;
 
@@ -37,19 +36,24 @@ public class Actor extends Entity {
 		a.velocity.add(forceDir.times(ke / a.size));
 
 		//Collision effect
-		collisionEffect = new RingEffect(position.plus(forceDir.times(size)), (ke + ke2) * 0.3f, (ke + ke2) * 0.05f);
+		map.addEffect(new CollisionEffect(position.plus(forceDir.times(size)), (ke + ke2) * 0.3f, forceDir.getDirection(), (ke + ke2) * 0.05f));
 	}
 
 	public void logic() {
-		if (collisionEffect != null) collisionEffect.logic();
-
 		//Cap velocity
 		if (velocity.getLength() > maxVelocity) {
 			velocity = Vertex.normalize(velocity).times(maxVelocity);
 		}
+
+		//Bounce
+		if (position.x+velocity.x* Game.updateTime < -Game.currentGame.gameWidth/2 || position.x+velocity.x*Game.updateTime > Game.currentGame.gameWidth/2)
+			velocity.x *= -0.6f;
+
+		//Collision
+		Actor a = map.getCollision(this, position.plus(velocity.times(Game.updateTime)), size);
+		if (a != null) collideWith(a);
 	}
 
 	public void draw() {
-		if (collisionEffect != null) collisionEffect.draw();
 	}
 }

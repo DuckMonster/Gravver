@@ -56,10 +56,6 @@ public class Player extends Actor {
 			//else velocity.y -= velocity.y * Game.updateTime;
 		}
 
-		//Bounce against the wall
-		if (Math.abs(position.x + velocity.x * Game.updateTime) > Game.currentGame.gameWidth / 2)
-			velocity.x *= -0.7f;
-
 		position.add(velocity.times(Game.updateTime));
 
 		//Gravity
