@@ -68,7 +68,7 @@ public class Game implements GLSurfaceView.Renderer {
 	}
 
 	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-		GLES20.glClearColor(1f, 0f, 0f, 1f);
+		GLES20.glClearColor(0f, 0f, 0f, 1f);
 	}
 
 	public void onDrawFrame(GL10 unused) {

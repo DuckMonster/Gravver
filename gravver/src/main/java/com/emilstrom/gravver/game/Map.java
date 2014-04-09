@@ -1,5 +1,6 @@
 package com.emilstrom.gravver.game;
 
+import com.emilstrom.gravver.game.entity.Actor;
 import com.emilstrom.gravver.game.entity.Debree;
 import com.emilstrom.gravver.game.entity.Player;
 import com.emilstrom.gravver.helper.GameMath;
@@ -17,7 +18,7 @@ public class Map {
 	int debreeListIndex = 0;
 
 	public Map() {
-		player = new Player();
+		player = new Player(this);
 	}
 
 	public void spawnDebree() {
@@ -31,7 +32,16 @@ public class Map {
 				Game.currentGame.gameHeight/2 + 2f
 		);
 
-		debreeList[spawnIndex] = new Debree(spawnPosition, player);
+		debreeList[spawnIndex] = new Debree(this, spawnPosition, player);
+	}
+
+	public Actor getCollision(Actor caller, Vertex position, float size) {
+		if (caller != player && player.getCollision(position, size)) return player;
+		for(Debree d : debreeList) {
+			if (d != null && d != caller && d.getCollision(position, size)) return d;
+		}
+
+		return null;
 	}
 
 	public void logic() {
@@ -44,7 +54,6 @@ public class Map {
 			spawnDebree();
 			debreeSpawnTimer.reset();
 		}
-
 
 		for(Debree d : debreeList) if (d != null) d.logic();
 	}

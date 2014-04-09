@@ -11,7 +11,7 @@ import com.emilstrom.gravver.helper.Vertex;
  */
 public class PlayerController {
 	static Vertex velocityButtonPosition = new Vertex(0,0), velocityButtonOffset = new Vertex(-0.75f, 1.27f),
-				gravityButtonPosition = new Vertex(0,0), gravityButtonOffset = new Vertex(0.75f, 1.27f), gravityButtonSize = new Vertex(2.2f, 2.2f);
+				gravityButtonPosition = new Vertex(0,0), gravityButtonOffset = new Vertex(0.25f, 0.5f), gravityButtonSize = new Vertex(2.8f, 2.8f);
 	static float velocityButtonRadius = 2f;
 
 	Sprite velocityRingSprite, gravityButtonSprite;

@@ -48,6 +48,13 @@ public class Vertex {
 		return Vertex.multiply(this, d);
 	}
 
+	public void normalize() {
+		float l = (float)Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+		x /= l;
+		y /= l;
+	}
+	public void reverse() { multiply(-1); }
+
 	public void copy(Vertex v) { x = v.x; y = v.y; }
 
 	public float getLength() { return getLength(this); }
@@ -78,6 +85,9 @@ public class Vertex {
 
 	public static Vertex getDirectionVertex(Vertex a, Vertex b) {
 		return normalize(subtract(b, a));
+	}
+	public static Vertex getDirectionVertex(float direction) {
+		return new Vertex(-(float)Math.sin(direction / 180f * Math.PI), (float)Math.cos(direction / 180f * Math.PI));
 	}
 
 	public static float getLength(Vertex a, Vertex b) {
